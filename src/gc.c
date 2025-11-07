@@ -1,15 +1,12 @@
-#include <stdlib.h>
+#include "object/object.h"
 #include "stack.h"
 #include "vm.h"
-#include "jlang_object/jlang_object.h"
+#include <stdlib.h>
 
-void mark(vm_t *vm)
-{
-  for(size_t i = 0; i < vm->objects->count; i++)
-  {
+void mark(vm_t *vm) {
+  for (size_t i = 0; i < vm->objects->count; i++) {
     jl_object_t *obj = vm->objects->data[i];
-    if(obj->is_marked)
-    {
+    if (obj->is_marked) {
       obj->is_marked = false;
       continue;
     }
@@ -19,47 +16,41 @@ void mark(vm_t *vm)
   stack_remove_nulls(vm->objects);
 }
 
-void trace(vm_t *vm)
-{
+void trace(vm_t *vm) {
   stack_t *gray_objs = stack_new();
-  if(gray_objs == NULL)
-  {
+  if (gray_objs == NULL) {
     return;
   }
-  for(size_t i = 0; i < vm->objects->count; i++)
-  {
+  for (size_t i = 0; i < vm->objects->count; i++) {
     jl_object_t *obj = vm->objects->data[i];
-    if(obj->is_marked)
-    {
+    if (obj->is_marked) {
       stack_push(gray_objs, obj);
     }
   }
 
-  while(gray_objs->count > 0)
-  {
+  while (gray_objs->count > 0) {
     jl_object_t *obj = stack_pop(gray_objs);
-    switch (obj->type)
-    {
-      case INT_OBJECT:
-      case FLOAT_OBJECT:
-      case STRING_OBJECT:
-        break;
-      case ARRAY_OBJECT:
-        for(size_t i = 0; i < obj->data.v_array->size; i++)
-        {
-          if(obj->data.v_array->elements[i]->is_marked)
-          {
-            continue;
-          }
-          stack_push(gray_objs, obj->data.v_array->elements[i]);
-          obj->data.v_array->elements[i]->is_marked = true;
+    switch (obj->type) {
+    case INT_OBJECT:
+    case FLOAT_OBJECT:
+    case STRING_OBJECT:
+      break;
+    case ARRAY_OBJECT:
+      for (size_t i = 0; i < obj->data.v_array->size; i++) {
+        if (obj->data.v_array->elements[i]->is_marked) {
+          continue;
         }
+        stack_push(gray_objs, obj->data.v_array->elements[i]);
+        obj->data.v_array->elements[i]->is_marked = true;
+      }
+      break;
+    case VECTOR_OBJECT:
+    case NULL_OBJECT:
+    case BOOL_OBJECT:
+    case FUNCTION_OBJECT:
       break;
     }
   }
 }
 
-void sweep(vm_t *vm)
-{
-
-}
+void sweep(vm_t *vm) {}

@@ -1,6 +1,6 @@
-#include "jlang_token/jlang_token_list.h"
-#include "jlang_program.h"
+#include "program.h"
 #include "stack.h"
+#include "token/token_list.h"
 
 void debug(jl_token_list_t *tokens, jl_program_t *program);
 int count_syntax(jl_syntax_t *syntax, int num);

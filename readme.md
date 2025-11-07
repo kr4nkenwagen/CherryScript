@@ -1,4 +1,6 @@
-#Variables
+# Cherry
+
+# Variables
 
 ## Declaration
 
@@ -41,7 +43,7 @@ const array = [];
 ```
 # Types
 
-jLang supports 6 data types.
+Cherry supports 6 data types.
 
 | Type | Description |
 |------|-------------|

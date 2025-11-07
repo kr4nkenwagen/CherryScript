@@ -1,0 +1,21 @@
+#include "eval_function.h"
+#include "../program.h"
+#include "../stack.h"
+#include "../syntax/syntax.h"
+#include "../token/token.h"
+#include "../vm.h"
+#include "interpreter.h"
+
+jl_object_t *eval_function_identifier(jl_syntax_t *syntax, vm_t *vm,
+                                      jl_program_t *program) {
+  jl_object_t *obj = interprete_branch(syntax, vm);
+  return obj;
+}
+
+void eval_function_declaration(jl_syntax_t *syntax, vm_t *vm,
+                               jl_program_t *program) {
+  jl_object_t *funct = jl_new_funct(syntax->right);
+
+  funct->name = syntax->right->token->literal;
+  stack_push(vm_curr_frame(vm), funct);
+}
