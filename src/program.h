@@ -12,8 +12,6 @@ typedef enum jl_program_type {
   PROG_IF
 } jl_program_type_t;
 
-#endif
-
 typedef struct jl_program jl_program_t;
 
 typedef struct jl_program {
@@ -28,6 +26,8 @@ typedef struct jl_program {
   jl_object_t *ret_value;
   jl_program_t *parent;
 } jl_program_t;
+
+#endif
 
 jl_program_t *jl_new_program(jl_program_t *parent);
 void jl_program_add(jl_program_t *program, jl_syntax_t *statement);
